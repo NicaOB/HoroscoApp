@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.horoscoapp.databinding.FragmentHoroscopeBinding
@@ -34,24 +35,16 @@ class HoroscopeFragment : Fragment() {
 
     private fun initUI() {
         initList()
-        initUIState()
     }
 
     private fun initList() {
-        adapter = HoroscopeAdapter()
+        adapter = HoroscopeAdapter(horoscopeViewModel.getHoroscope()){
+            findNavController().navigate(
+                HoroscopeFragmentDirections.actionHoroscopeFragmentToHoroscopeDetailActivity(it.id)
+            )
+        }
         binding.rvHoroscope.layoutManager = GridLayoutManager(context, 2)
         binding.rvHoroscope.adapter = adapter
-
-    }
-
-    private fun initUIState() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                horoscopeViewModel.horoscope.collect {
-                    adapter.updateList(it)
-                }
-            }
-        }
     }
 
     override fun onCreateView(
