@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,16 +63,11 @@ class LuckFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
-        //binding.ivRoulette.setOnClickListener { spinRoulette() }
 
         binding.ivRoulette.setOnTouchListener(object : OnSwipeTouchListener(requireContext()){
-
-            override fun onSwipeRight() {
+            override fun onSwipeRight(): Boolean {
                 spinRoulette()
-            }
-
-            override fun onSwipeLeft() {
-                spinRoulette()
+                return true
             }
         })
     }
